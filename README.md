@@ -1,5 +1,5 @@
-# Octocat API
-Octocat API provides an easy-to-use REST API endpoint for applications to get formatted GitHub user information. Provide a  GitHub username and the application will do the rest.
+# Octocat Fun
+Octocat Fun provides an easy-to-use REST API endpoint for applications to get formatted GitHub user information. Provide a  GitHub username and the application will do the rest.
 
 ## Requirements
 - Java 25
@@ -16,51 +16,60 @@ curl --location '127.0.0.1:8080/api/github/user/octocat' \
 --header 'Content-Type: application/json'
 ```
 
-### Example Response
+### Example Successful Response
+**Response Status:** 200
+
 ```json
 {
-    "avatar": "https://avatars.githubusercontent.com/u/583231?v=4",
-    "created_at": "Tue Jan 25 13:44:36 EST 2011",
-    "display_name": "The Octocat",
-    "email": null,
-    "geo_location": "San Francisco",
-    "repos": [
-        {
-            "name": "Hello-World",
-            "url": "https://api.github.com/repos/octocat/Hello-World"
-        },
-        {
-            "name": "Spoon-Knife",
-            "url": "https://api.github.com/repos/octocat/Spoon-Knife"
-        },
-        {
-            "name": "boysenberry-repo-1",
-            "url": "https://api.github.com/repos/octocat/boysenberry-repo-1"
-        },
-        {
-            "name": "git-consortium",
-            "url": "https://api.github.com/repos/octocat/git-consortium"
-        },
-        {
-            "name": "hello-worId",
-            "url": "https://api.github.com/repos/octocat/hello-worId"
-        },
-        {
-            "name": "linguist",
-            "url": "https://api.github.com/repos/octocat/linguist"
-        },
-        {
-            "name": "octocat.github.io",
-            "url": "https://api.github.com/repos/octocat/octocat.github.io"
-        },
-        {
-            "name": "test-repo1",
-            "url": "https://api.github.com/repos/octocat/test-repo1"
-        }
-    ],
-    "url": "https://api.github.com/users/octocat",
-    "user_name": "octocat"
+  "avatar": "https://avatars.githubusercontent.com/u/583231?v=4",
+  "created_at": "Tue, 25 Jan 2011 18:44:36 GMT",
+  "display_name": "The Octocat",
+  "email": null,
+  "geo_location": "San Francisco",
+  "repos": [
+    {
+      "name": "Hello-World",
+      "url": "https://api.github.com/repos/octocat/Hello-World"
+    },
+    {
+      "name": "Spoon-Knife",
+      "url": "https://api.github.com/repos/octocat/Spoon-Knife"
+    },
+    {
+      "name": "boysenberry-repo-1",
+      "url": "https://api.github.com/repos/octocat/boysenberry-repo-1"
+    },
+    {
+      "name": "git-consortium",
+      "url": "https://api.github.com/repos/octocat/git-consortium"
+    },
+    {
+      "name": "hello-worId",
+      "url": "https://api.github.com/repos/octocat/hello-worId"
+    },
+    {
+      "name": "linguist",
+      "url": "https://api.github.com/repos/octocat/linguist"
+    },
+    {
+      "name": "octocat.github.io",
+      "url": "https://api.github.com/repos/octocat/octocat.github.io"
+    },
+    {
+      "name": "test-repo1",
+      "url": "https://api.github.com/repos/octocat/test-repo1"
+    }
+  ],
+  "url": "https://api.github.com/users/octocat",
+  "user_name": "octocat"
 }
+```
+
+### Example Failure Response
+**Response Status:** 404
+
+```json
+{}
 ```
 
 ## How to Run Application Locally

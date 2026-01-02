@@ -5,6 +5,12 @@ import lombok.Data;
 import org.kohsuke.github.GHUser;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,14 +51,22 @@ public class GithubDto {
     private String url;
 
     /**
-     * GMT Timestamp for found GitHub user's creation time. Example format: Tue, 25 Jan 2011 18:44:36 GMT
+     * Timestamp for found GitHub user's creation time in GMT
      */
-    private String created_at;
+    private Date created_at;
 
     /**
      * List of repositories associated with the found GitHub user.
      */
     private List<GithubRepositoryDto> repos;
+
+    public String getCreated_at() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
+                .withZone(ZoneId.of("Etc/GMT"));
+
+        ZonedDateTime utcInstant = this.created_at.toInstant().atZone(ZoneId.of("Etc/GMT"));
+        return utcInstant.format(formatter);
+    }
 
     public static GithubDto buildFromUser(GHUser userResponse) throws IOException {
         return GithubDto.builder()
@@ -62,7 +76,7 @@ public class GithubDto {
                 .geo_location(userResponse.getLocation())
                 .email(userResponse.getEmail())
                 .url(String.valueOf(userResponse.getUrl()))
-                .created_at(String.valueOf(userResponse.getCreatedAt()))
+                .created_at(userResponse.getCreatedAt())
                 .repos(GithubRepositoryDto.buildListFromUser(userResponse))
                 .build();
     }
