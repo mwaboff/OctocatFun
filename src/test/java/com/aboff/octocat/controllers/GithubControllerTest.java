@@ -35,6 +35,12 @@ class GithubControllerTest {
     }
 
     @Test
+    void testGetUserDetails_PatternMismatch() {
+        ResponseEntity<GithubDto> response = githubController.getUserDetails("bad_user_name");
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
     void testGetUserDetails_NotFound() {
         String username = "nonexistent";
 
@@ -43,5 +49,37 @@ class GithubControllerTest {
         ResponseEntity<GithubDto> response = githubController.getUserDetails(username);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void testGetUserDetails_NullUsername() {
+        org.junit.jupiter.api.Assertions.assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
+            githubController.getUserDetails(null);
+        });
+    }
+
+    @Test
+    void testGetUserDetails_EmptyUsername() {
+        org.junit.jupiter.api.Assertions.assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
+            githubController.getUserDetails("");
+        });
+    }
+
+    @Test
+    void testGetUserDetails_BlankUsername() {
+        org.junit.jupiter.api.Assertions.assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
+            githubController.getUserDetails(" ");
+        });
+    }
+
+    @Test
+    void testGetUserDetails_PatternMatch_Complex() {
+        String username = "octo-cat-123";
+        GithubDto mockDto = GithubDto.builder().user_name(username).created_at(new java.util.Date()).build();
+        when(githubService.getUserInfo(username)).thenReturn(mockDto);
+
+        ResponseEntity<GithubDto> response = githubController.getUserDetails(username);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(username, response.getBody().getUser_name());
     }
 }

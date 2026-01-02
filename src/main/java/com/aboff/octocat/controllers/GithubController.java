@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +31,22 @@ public class GithubController {
     @GetMapping(path="/user/{username}")
     ResponseEntity<GithubDto> getUserDetails(@PathVariable @NotNull @NotBlank String username) {
         log.info("Request received for GitHub user: {}", username);
+
+        // Check if username matches GitHub's naming requirements to help avoid malicious user input. When signing up you are given these instructions:
+        //      "Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen."
+        if (!username.matches("^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$")) {
+            log.error("Requested user is not a valid name.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
         GithubDto userDetails = githubService.getUserInfo(username);
 
         if (userDetails == null) {
             log.info("No data found for username: {}", username);
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        log.info("Found data for user: {}", String.valueOf(userDetails));
+        log.info("Found data for user: {}", userDetails);
         return ResponseEntity.ok(userDetails);
 
     }
