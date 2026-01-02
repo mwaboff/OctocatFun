@@ -34,19 +34,18 @@ class GithubDtoTest {
         String email = "octocat@github.com";
         String htmlUrl = "http://github.com/octocat";
         Date createdAt = new Date();
+        String repoName = "Hello-World";
 
         when(ghUser.getLogin()).thenReturn(login);
         when(ghUser.getName()).thenReturn(name);
         when(ghUser.getAvatarUrl()).thenReturn(avatarUrl);
         when(ghUser.getLocation()).thenReturn(location);
         when(ghUser.getEmail()).thenReturn(email);
-        // doReturn(java.net.URI.create(htmlUrl).toURL()).when(ghUser).getUrl();
         when(ghUser.getCreatedAt()).thenReturn(createdAt);
 
         // Mock repositories
         when(ghUser.getPublicRepoCount()).thenReturn(1);
-        when(ghRepository.getName()).thenReturn("Hello-World");
-        // doReturn(java.net.URI.create("http://github.com/octocat/Hello-World").toURL()).when(ghRepository).getUrl();
+        when(ghRepository.getName()).thenReturn(repoName);
         doReturn(Map.of("Hello-World", ghRepository)).when(ghUser).getRepositories();
 
         // Act
@@ -66,7 +65,7 @@ class GithubDtoTest {
         assertEquals(utcInstant.format(formatter), dto.getCreated_at());
         assertNotNull(dto.getRepos());
         assertEquals(1, dto.getRepos().size());
-        assertEquals("Hello-World", dto.getRepos().get(0).getName());
+        assertEquals(repoName, dto.getRepos().get(0).getName());
         assertEquals("null", dto.getRepos().get(0).getUrl());
     }
 
