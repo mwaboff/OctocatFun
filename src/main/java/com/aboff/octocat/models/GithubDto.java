@@ -60,6 +60,14 @@ public class GithubDto {
      */
     private List<GithubRepositoryDto> repos;
 
+    /**
+     * Returns the user's account creation timestamp formatted in GMT.
+     * 
+     * The format used is: "EEE, dd MMM yyyy HH:mm:ss zzz" (e.g., "Tue, 25 Jan 2011
+     * 18:44:36 GMT").
+     * 
+     * @return the formatted creation timestamp string in GMT timezone
+     */
     public String getCreated_at() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
                 .withZone(ZoneId.of("Etc/GMT"));
@@ -68,6 +76,16 @@ public class GithubDto {
         return utcInstant.format(formatter);
     }
 
+    /**
+     * Constructs a {@link GithubDto} from a GitHub API user response.
+     * 
+     * Maps user profile fields to build the final response to the user.
+     *
+     * @param userResponse the {@link GHUser} object from the GitHub hub4j library
+     * @return a fully populated {@link GithubDto} instance
+     * @throws IOException if an error occurs while fetching user data or
+     *                     repositories from GitHub
+     */
     public static GithubDto buildFromUser(GHUser userResponse) throws IOException {
         return GithubDto.builder()
                 .user_name(userResponse.getLogin())
