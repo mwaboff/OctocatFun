@@ -177,7 +177,8 @@ Because of the time constraints for the project and because I believe AI is an i
 1. Javadocs for each method
 2. Unit tests
 3. Integration tests
-4. Troubleshooting initial Gradle configuration mistakes
+4. Dockerfile
+5. Troubleshooting initial Gradle configuration mistakes
 
 For each of the above, I reviewed and touched every line to ensure it matched my style so I could ensure I stood by the work.
 
