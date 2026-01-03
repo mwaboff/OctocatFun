@@ -38,7 +38,7 @@ public class IntegrationTestConfig {
         GHUser octocatUser = mock(GHUser.class);
         when(octocatUser.getLogin()).thenReturn("octocat");
         when(octocatUser.getName()).thenReturn("The Octocat");
-        when(octocatUser.getAvatarUrl()).thenReturn("https://avatars.githubusercontent.com/u/583231");
+        when(octocatUser.getAvatarUrl()).thenReturn("https://avatars.githubusercontent.com/u/583231?v=4");
         when(octocatUser.getLocation()).thenReturn("San Francisco");
         when(octocatUser.getEmail()).thenReturn(null);
         URL userUrl = new URI("https://api.github.com/users/octocat").toURL();
