@@ -5,13 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.hamcrest.Matchers.hasSize;
+import java.nio.charset.StandardCharsets;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,21 +42,16 @@ public class GithubApiIntegrationTest {
 
     @Test
     void testGetUserDetails_ValidUsername_ReturnsOk() throws Exception {
+        // Load expected response from JSON file
+        ClassPathResource resource = new ClassPathResource("karate/fixtures/octocat-expected-response.json");
+        String expectedJson = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
+
         mockMvc.perform(get("/api/github/user/octocat")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.user_name").value("octocat"))
-                .andExpect(jsonPath("$.display_name").value("The Octocat"))
-                .andExpect(jsonPath("$.avatar").value("https://avatars.githubusercontent.com/u/583231"))
-                .andExpect(jsonPath("$.geo_location").value("San Francisco"))
-                .andExpect(jsonPath("$.email").value(org.hamcrest.Matchers.nullValue()))
-                .andExpect(jsonPath("$.url").value("https://api.github.com/users/octocat"))
-                .andExpect(jsonPath("$.created_at").value("Tue, 25 Jan 2011 18:44:36 Z"))
-                .andExpect(jsonPath("$.repos", hasSize(1)))
-                .andExpect(jsonPath("$.repos[0].name").value("boysenberry-repo-1"))
-                .andExpect(jsonPath("$.repos[0].url").value("https://api.github.com/repos/octocat/boysenberry-repo-1"));
+                .andExpect(content().json(expectedJson));
     }
 
     @Test

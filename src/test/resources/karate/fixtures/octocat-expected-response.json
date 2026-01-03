@@ -5,7 +5,7 @@
     "geo_location": "San Francisco",
     "email": null,
     "url": "https://api.github.com/users/octocat",
-    "created_at": "Tue, 25 Jan 2011 18:44:36 GMT",
+    "created_at": "Tue, 25 Jan 2011 18:44:36 Z",
     "repos": [{
         "name": "boysenberry-repo-1",
         "url": "https://api.github.com/repos/octocat/boysenberry-repo-1"
