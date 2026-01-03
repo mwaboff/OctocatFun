@@ -3,11 +3,13 @@ package com.aboff.octocat.services.impl;
 import com.aboff.octocat.models.GithubDto;
 import com.aboff.octocat.services.GithubClient;
 import lombok.extern.slf4j.Slf4j;
+import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.resilience.annotation.Retryable;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -44,7 +46,11 @@ public class GithubClientImpl implements GithubClient {
      */
     @Override
     @Cacheable("github-user")
-    @Retryable(includes = IOException.class, delay = 100, jitter = 10)
+    @Retryable(
+            noRetryFor = GHFileNotFoundException.class, // Skip retries if user not found.
+            maxAttempts = 4,
+            backoff = @Backoff(delay=500, random = true)
+    )
     public GithubDto getUserDetails(String username) throws IOException {
         if (this.github == null) {
             log.info("Initializing new anonymous GitHub client...");
