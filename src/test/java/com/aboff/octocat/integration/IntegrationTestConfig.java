@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -30,7 +32,7 @@ public class IntegrationTestConfig {
      */
     @Bean
     @Primary
-    public GitHub mockGitHub() throws IOException {
+    public GitHub mockGitHub() throws IOException, URISyntaxException {
         GitHub github = mock(GitHub.class);
 
         GHUser octocatUser = mock(GHUser.class);
@@ -38,13 +40,18 @@ public class IntegrationTestConfig {
         when(octocatUser.getName()).thenReturn("The Octocat");
         when(octocatUser.getAvatarUrl()).thenReturn("https://avatars.githubusercontent.com/u/583231");
         when(octocatUser.getLocation()).thenReturn("San Francisco");
-        when(octocatUser.getEmail()).thenReturn("octocat@github.com");
-        when(octocatUser.getCreatedAt()).thenReturn(new Date(1654171200000L)); // Thu, 02 Jun 2022 12:00:00 Z
+        when(octocatUser.getEmail()).thenReturn(null);
+        URL userUrl = new URI("https://api.github.com/users/octocat").toURL();
+        doAnswer(invocation -> userUrl).when(octocatUser).getUrl();
+        // Date: Tue, 25 Jan 2011 18:44:36 GMT = 1295981076000L
+        when(octocatUser.getCreatedAt()).thenReturn(new Date(1295981076000L));
         when(octocatUser.getPublicRepoCount()).thenReturn(1);
 
-        GHRepository helloWorldRepo = mock(GHRepository.class);
-        when(helloWorldRepo.getName()).thenReturn("Hello-World");
-        doReturn(Map.of("Hello-World", helloWorldRepo)).when(octocatUser).getRepositories();
+        GHRepository repo = mock(GHRepository.class);
+        when(repo.getName()).thenReturn("boysenberry-repo-1");
+        URL repoUrl = new URI("https://api.github.com/repos/octocat/boysenberry-repo-1").toURL();
+        doAnswer(invocation -> repoUrl).when(repo).getUrl();
+        doReturn(Map.of("boysenberry-repo-1", repo)).when(octocatUser).getRepositories();
 
         when(github.getUser("octocat")).thenReturn(octocatUser);
 
@@ -55,6 +62,8 @@ public class IntegrationTestConfig {
         when(testUser.getAvatarUrl()).thenReturn("https://avatars.githubusercontent.com/u/1");
         when(testUser.getLocation()).thenReturn("Test Location");
         when(testUser.getEmail()).thenReturn("test@example.com");
+        URL testUserUrl = new URI("https://api.github.com/users/test-user").toURL();
+        doAnswer(invocation -> testUserUrl).when(testUser).getUrl();
         when(testUser.getCreatedAt()).thenReturn(new Date(1654171200000L));
         when(testUser.getPublicRepoCount()).thenReturn(0);
         doReturn(Map.of()).when(testUser).getRepositories();

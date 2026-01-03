@@ -48,12 +48,12 @@ public class GithubApiIntegrationTest {
                 .andExpect(jsonPath("$.display_name").value("The Octocat"))
                 .andExpect(jsonPath("$.avatar").value("https://avatars.githubusercontent.com/u/583231"))
                 .andExpect(jsonPath("$.geo_location").value("San Francisco"))
-                .andExpect(jsonPath("$.email").value("octocat@github.com"))
-                .andExpect(jsonPath("$.url").value("null"))
-                .andExpect(jsonPath("$.created_at").value("Thu, 02 Jun 2022 12:00:00 Z"))
+                .andExpect(jsonPath("$.email").value(org.hamcrest.Matchers.nullValue()))
+                .andExpect(jsonPath("$.url").value("https://api.github.com/users/octocat"))
+                .andExpect(jsonPath("$.created_at").value("Tue, 25 Jan 2011 18:44:36 Z"))
                 .andExpect(jsonPath("$.repos", hasSize(1)))
-                .andExpect(jsonPath("$.repos[0].name").value("Hello-World"))
-                .andExpect(jsonPath("$.repos[0].url").value("null"));
+                .andExpect(jsonPath("$.repos[0].name").value("boysenberry-repo-1"))
+                .andExpect(jsonPath("$.repos[0].url").value("https://api.github.com/repos/octocat/boysenberry-repo-1"));
     }
 
     @Test
