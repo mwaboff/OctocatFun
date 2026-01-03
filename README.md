@@ -69,6 +69,7 @@ curl --location '127.0.0.1:8080/api/github/user/octocat' \
 **Error Response Status:**
 - 400 - Bad Request (possibly caused by malformed username)
 - 404 - Not Found (possibly caused by user not found)
+- 406 - Not Accepted (possibly caused by client requesting non application/json format)
 
 ## How to Run Application Locally
 ### IntelliJ

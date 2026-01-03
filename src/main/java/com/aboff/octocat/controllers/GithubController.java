@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,11 +47,12 @@ public class GithubController {
      *         <li>{@code 200 OK} with {@link GithubDto} body if user is found</li>
      *         <li>{@code 400 Bad Request} if the username format is invalid</li>
      *         <li>{@code 404 Not Found} if the user does not exist on GitHub</li>
+     *         <li>{@code 406 Not Acceptable} if the client requests an unsupported content type</li>
      *         </ul>
      * @throws jakarta.validation.ConstraintViolationException if username is null
      *                                                         or blank
      */
-    @GetMapping(path = "/user/{username}")
+    @GetMapping(path = "/user/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<GithubDto> getUserDetails(@PathVariable @NotNull @NotBlank String username) {
         log.info("Request received for GitHub user: {}", username);
 
