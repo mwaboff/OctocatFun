@@ -103,6 +103,27 @@ _Alternatively you can recreate it with the below configuration:_
 /gradlew test --tests *GithubApiIntegrationTest
 ```
 
+### Docker
+#### Build the Docker Image
+```
+docker build -t octocat:latest .
+```
+
+#### Run the Container
+```
+docker run -p 8080:8080 octocat:latest
+```
+
+#### Run With Custom Spring Profile
+```
+docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE=example octocat:latest
+```
+
+#### Run in Detached Mode
+```
+docker run -d -p 8080:8080 --name octocat-app octocat:latest
+```
+
 ## Miscellaneous
 
 ### API Rate Limiting
@@ -156,7 +177,8 @@ Because of the time constraints for the project and because I believe AI is an i
 1. Javadocs for each method
 2. Unit tests
 3. Integration tests
-4. Troubleshooting initial Gradle configuration mistakes
+4. Dockerfile
+5. Troubleshooting initial Gradle configuration mistakes
 
 For each of the above, I reviewed and touched every line to ensure it matched my style so I could ensure I stood by the work.
 
