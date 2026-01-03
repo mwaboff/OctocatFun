@@ -75,7 +75,7 @@ class GithubControllerTest {
     @Test
     void testGetUserDetails_PatternMatch_Complex() {
         String username = "octo-cat-123";
-        GithubDto mockDto = GithubDto.builder().user_name(username).created_at(new java.util.Date()).build();
+        GithubDto mockDto = GithubDto.builder().user_name(username).build();
         when(githubService.getUserInfo(username)).thenReturn(mockDto);
 
         ResponseEntity<GithubDto> response = githubController.getUserDetails(username);

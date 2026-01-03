@@ -48,4 +48,43 @@ class GithubClientImplTest {
         assertEquals(username, result.getUser_name());
         verify(github).getUser(username);
     }
+
+    @Test
+    void testGetUserDetails_InitializesGithubWhenNull() throws IOException {
+        String username = "octocat";
+
+        GithubClientImpl spyClient = spy(new GithubClientImpl());
+
+        try (var mockedStatic = mockStatic(GitHub.class)) {
+            mockedStatic.when(GitHub::connectAnonymously).thenReturn(github);
+
+            when(github.getUser(username)).thenReturn(ghUser);
+            when(ghUser.getLogin()).thenReturn(username);
+            when(ghUser.getPublicRepoCount()).thenReturn(0);
+            doReturn(java.util.Collections.emptyMap()).when(ghUser).getRepositories();
+
+            GithubDto result = spyClient.getUserDetails(username);
+
+            assertNotNull(result);
+            mockedStatic.verify(GitHub::connectAnonymously, times(1));
+        }
+    }
+
+    @Test
+    void testGetUserDetails_DoesNotReinitializeGithubWhenAlreadySet() throws IOException {
+        String username = "octocat";
+
+        githubClient.github = github;
+
+        when(github.getUser(username)).thenReturn(ghUser);
+        when(ghUser.getLogin()).thenReturn(username);
+        when(ghUser.getPublicRepoCount()).thenReturn(0);
+        doReturn(java.util.Collections.emptyMap()).when(ghUser).getRepositories();
+
+        try (var mockedStatic = mockStatic(GitHub.class)) {
+            GithubDto result = githubClient.getUserDetails(username);
+            assertNotNull(result);
+            mockedStatic.verify(GitHub::connectAnonymously, never());
+        }
+    }
 }

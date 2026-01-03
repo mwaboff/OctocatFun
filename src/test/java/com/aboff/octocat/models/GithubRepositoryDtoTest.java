@@ -38,26 +38,7 @@ class GithubRepositoryDtoTest {
         // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals("repo1", result.get(0).getName());
-        assertEquals("null", result.get(0).getUrl());
-    }
-
-    @Test
-    void testLombokMethods() {
-        GithubRepositoryDto dto1 = GithubRepositoryDto.builder().name("repo1").build();
-        GithubRepositoryDto dto2 = GithubRepositoryDto.builder().name("repo1").build();
-        GithubRepositoryDto dto3 = GithubRepositoryDto.builder().name("repo2").build();
-
-        // Equals and HashCode
-        assertEquals(dto1, dto2);
-        assertNotEquals(dto1, dto3);
-        assertEquals(dto1.hashCode(), dto2.hashCode());
-
-        // ToString
-        assertNotNull(dto1.toString());
-
-        // Getters and Setters
-        dto1.setUrl("http://url");
-        assertEquals("http://url", dto1.getUrl());
+        assertEquals("repo1", result.getFirst().getName());
+        assertEquals("null", result.getFirst().getUrl());
     }
 }

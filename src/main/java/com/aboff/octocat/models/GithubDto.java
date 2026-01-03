@@ -67,10 +67,14 @@ public class GithubDto {
      * @return the formatted creation timestamp string in UTC timezone
      */
     public String getCreated_at() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z")
-                .withZone(ZoneOffset.UTC);
+        if (this.created_at == null) {
+            return null;
+        }
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter
+                .ofPattern("EEE, dd MMM yyyy HH:mm:ss z")
+                .withZone(java.time.ZoneOffset.UTC);
 
-        ZonedDateTime utcInstant = this.created_at.toInstant().atZone(ZoneOffset.UTC);
+        java.time.ZonedDateTime utcInstant = this.created_at.toInstant().atZone(java.time.ZoneOffset.UTC);
         return utcInstant.format(formatter);
     }
 

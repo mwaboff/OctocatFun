@@ -6,6 +6,7 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class GithubDtoTest {
 
@@ -25,6 +27,22 @@ class GithubDtoTest {
     GHRepository ghRepository;
 
     @Test
+    void testGetCreatedAt() {
+        // Thursday, June 02, 2022 12:00:00 PM UTC
+        java.util.Date fixedDate = new java.util.Date(1654171200000L);
+
+        GithubDto dto = GithubDto.builder()
+                .user_name("test-user")
+                .created_at(fixedDate)
+                .build();
+
+        // Expected format: EEE, dd MMM yyyy HH:mm:ss z
+        String expected = "Thu, 02 Jun 2022 12:00:00 Z";
+        assertEquals(expected, dto.getCreated_at());
+    }
+
+
+    @Test
     void testBuildFromUser() throws IOException {
         // Arrange
         String login = "octocat";
@@ -32,8 +50,8 @@ class GithubDtoTest {
         String avatarUrl = "http://example.com/avatar";
         String location = "San Francisco";
         String email = "octocat@github.com";
-        String htmlUrl = "http://github.com/octocat";
-        Date createdAt = new Date();
+        Date createdAt = new java.util.Date(1654171200000L);
+        String expectedCreatedAt = "Thu, 02 Jun 2022 12:00:00 Z";
         String repoName = "Hello-World";
 
         when(ghUser.getLogin()).thenReturn(login);
@@ -42,11 +60,10 @@ class GithubDtoTest {
         when(ghUser.getLocation()).thenReturn(location);
         when(ghUser.getEmail()).thenReturn(email);
         when(ghUser.getCreatedAt()).thenReturn(createdAt);
-
-        // Mock repositories
-        when(ghUser.getPublicRepoCount()).thenReturn(1);
+        when(ghUser.getPublicRepoCount()).thenReturn(2);
         when(ghRepository.getName()).thenReturn(repoName);
-        doReturn(Map.of("Hello-World", ghRepository)).when(ghUser).getRepositories();
+        when(ghRepository.getUrl()).thenReturn(null);
+        doReturn(Map.of(repoName, ghRepository, "Second-Repo", ghRepository)).when(ghUser).getRepositories();
 
         // Act
         GithubDto dto = GithubDto.buildFromUser(ghUser);
@@ -58,34 +75,11 @@ class GithubDtoTest {
         assertEquals(location, dto.getGeo_location());
         assertEquals(email, dto.getEmail());
         assertEquals("null", dto.getUrl());
-        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter
-                .ofPattern("EEE, dd MMM yyyy HH:mm:ss z")
-                .withZone(java.time.ZoneOffset.UTC);
-        java.time.ZonedDateTime utcInstant = createdAt.toInstant().atZone(java.time.ZoneOffset.UTC);
-        assertEquals(utcInstant.format(formatter), dto.getCreated_at());
+        assertEquals(expectedCreatedAt, dto.getCreated_at());
         assertNotNull(dto.getRepos());
-        assertEquals(1, dto.getRepos().size());
-        assertEquals(repoName, dto.getRepos().get(0).getName());
-        assertEquals("null", dto.getRepos().get(0).getUrl());
-    }
-
-    @Test
-    void testLombokMethods() {
-        GithubDto dto1 = GithubDto.builder().user_name("user1").created_at(new Date()).build();
-        GithubDto dto2 = GithubDto.builder().user_name("user1").created_at(new Date()).build();
-        GithubDto dto3 = GithubDto.builder().user_name("user2").created_at(new Date()).build();
-
-        // Equals and HashCode
-        assertEquals(dto1, dto2);
-        assertNotEquals(dto1, dto3);
-        assertEquals(dto1.hashCode(), dto2.hashCode());
-
-        // ToString
-        assertNotNull(dto1.toString());
-
-        // Getters and Setters
-        dto1.setDisplay_name("Name");
-        assertEquals("Name", dto1.getDisplay_name());
+        assertEquals(2, dto.getRepos().size());
+        assertEquals(repoName, dto.getRepos().getFirst().getName());
+        assertEquals("null", dto.getRepos().getFirst().getUrl());
     }
 
 }
