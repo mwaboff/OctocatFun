@@ -103,6 +103,27 @@ _Alternatively you can recreate it with the below configuration:_
 /gradlew test --tests *GithubApiIntegrationTest
 ```
 
+### Docker
+#### Build the Docker Image
+```
+docker build -t octocat:latest .
+```
+
+#### Run the Container
+```
+docker run -p 8080:8080 octocat:latest
+```
+
+#### Run With Custom Spring Profile
+```
+docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE=dev octocat:latest
+```
+
+#### Run in Detached Mode
+```
+docker run -d -p 8080:8080 --name octocat-app octocat:latest
+```
+
 ## Miscellaneous
 
 ### API Rate Limiting
