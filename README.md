@@ -72,7 +72,7 @@ curl --location '127.0.0.1:8080/api/github/user/octocat' \
 
 ## How to Run Application Locally
 ### IntelliJ
-1. Import the `.idea/runConfigurations/OctocatApplication.xml` into your Run/Debug Configurations.
+1. Import the `.idea/runConfigurations/Run_Application.xml` into your Run/Debug Configurations.
 2. Click Run.
 
 _Alternatively you can recreate it with the below configuration:_  
@@ -98,6 +98,9 @@ _Alternatively you can recreate it with the below configuration:_
 ```
 
 #### Run Integration Tests
+```
+/gradlew test --tests *GithubApiIntegrationTest
+```
 
 ## Miscellaneous
 
@@ -110,7 +113,6 @@ To mitigate impact of rate limiting, we have implemented caching, so repeated re
 Below I will discuss why I decided on some of the decisions I made during this project. While there may have been better choices, I hope my reasoning clarifies why I settled what I did.
 
 ### Connecting to GitHub: Library vs API
-
 When connecting to an API, we have the choice of either directly calling the API endpoints or using a pre-built library (when available). While GitHub does not offer an official Java library, it does [recommend two community made ones](https://docs.github.com/en/rest/using-the-rest-api/libraries-for-the-rest-api?apiVersion=2022-11-28#java) that are actively developed.
 
 There are pros and cons for choosing either strategy:
