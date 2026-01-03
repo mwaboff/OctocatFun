@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.retry.annotation.Backoff;
@@ -29,6 +30,7 @@ public class GithubClientImpl implements GithubClient {
     /**
      * The GitHub API client instance. Lazily initialized on first use.
      */
+    @Autowired(required = false)
     GitHub github;
 
     /**

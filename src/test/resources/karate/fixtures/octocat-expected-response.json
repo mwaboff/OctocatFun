@@ -1,0 +1,15 @@
+{
+    "user_name": "octocat",
+    "display_name": "The Octocat",
+    "avatar": "https://avatars.githubusercontent.com/u/583231",
+    "geo_location": "San Francisco",
+    "email": "octocat@github.com",
+    "url": "null",
+    "created_at": "Thu, 02 Jun 2022 12:00:00 Z",
+    "repos": [
+        {
+            "name": "Hello-World",
+            "url": "null"
+        }
+    ]
+}
