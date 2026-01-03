@@ -116,7 +116,7 @@ docker run -p 8080:8080 octocat:latest
 
 #### Run With Custom Spring Profile
 ```
-docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE=dev octocat:latest
+docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE=example octocat:latest
 ```
 
 #### Run in Detached Mode

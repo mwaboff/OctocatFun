@@ -18,7 +18,7 @@ COPY src/ src/
 RUN ./gradlew bootJar -x test
 
 # Stage 2: Runtime image
-# Note: If Java 25 is not available, use: eclipse-temurin:23-jre-alpine or eclipse-temurin:21-jre-alpine
+# Note: This is the official image from Docker: https://hub.docker.com/_/eclipse-temurin
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
