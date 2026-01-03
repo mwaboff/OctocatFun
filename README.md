@@ -97,6 +97,8 @@ _Alternatively you can recreate it with the below configuration:_
 ./gradlew test
 ```
 
+#### Run Integration Tests
+
 ## Miscellaneous
 
 ### API Rate Limiting
@@ -145,3 +147,14 @@ Whenever using user provided input, we should always validate the data given. To
 2. Manual regex checks to validate that the username provided matches GitHub's own username requirements ("Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.").
 
 Because we're not saving to a database, there's limited injection opportunities so the above should provide reasonable protection from malicious actors.
+
+### AI Usage
+Because of the time constraints for the project and because I believe AI is an incredibly powerful tool that engineers need to master, I used AI to help write the following:
+1. Javadocs for each method
+2. Unit tests
+3. Integration tests
+4. Troubleshooting initial Gradle configuration mistakes
+
+For each of the above, I reviewed and touched every line to ensure it matched my style so I could ensure I stood by the work.
+
+I did not use AI to build the logic or make any design decisions for the application. 
