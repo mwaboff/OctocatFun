@@ -59,9 +59,9 @@ class GithubDtoTest {
         assertEquals(email, dto.getEmail());
         assertEquals("null", dto.getUrl());
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter
-                .ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
-                .withZone(java.time.ZoneId.of("Etc/GMT"));
-        java.time.ZonedDateTime utcInstant = createdAt.toInstant().atZone(java.time.ZoneId.of("Etc/GMT"));
+                .ofPattern("EEE, dd MMM yyyy HH:mm:ss z")
+                .withZone(java.time.ZoneOffset.UTC);
+        java.time.ZonedDateTime utcInstant = createdAt.toInstant().atZone(java.time.ZoneOffset.UTC);
         assertEquals(utcInstant.format(formatter), dto.getCreated_at());
         assertNotNull(dto.getRepos());
         assertEquals(1, dto.getRepos().size());

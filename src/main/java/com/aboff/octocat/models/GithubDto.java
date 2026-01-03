@@ -5,8 +5,6 @@ import lombok.Data;
 import org.kohsuke.github.GHUser;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,18 +59,18 @@ public class GithubDto {
     private List<GithubRepositoryDto> repos;
 
     /**
-     * Returns the user's account creation timestamp formatted in GMT.
+     * Returns the user's account creation timestamp formatted in UTC.
+     *
+     * The format used is: "EEE, dd MMM yyyy HH:mm:ss z" (e.g., "Tue, 25 Jan 2011
+     * 18:44:36 Z").
      * 
-     * The format used is: "EEE, dd MMM yyyy HH:mm:ss zzz" (e.g., "Tue, 25 Jan 2011
-     * 18:44:36 GMT").
-     * 
-     * @return the formatted creation timestamp string in GMT timezone
+     * @return the formatted creation timestamp string in UTC timezone
      */
     public String getCreated_at() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
-                .withZone(ZoneId.of("Etc/GMT"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z")
+                .withZone(ZoneOffset.UTC);
 
-        ZonedDateTime utcInstant = this.created_at.toInstant().atZone(ZoneId.of("Etc/GMT"));
+        ZonedDateTime utcInstant = this.created_at.toInstant().atZone(ZoneOffset.UTC);
         return utcInstant.format(formatter);
     }
 
