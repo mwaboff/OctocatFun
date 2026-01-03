@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller for GitHub user and repository information.
- * 
+ *
  * Provides endpoints to retrieve GitHub user metadata and their public
  * repositories.
  * Input validation is enforced via Jakarta Bean Validation annotations.
@@ -70,7 +70,7 @@ public class GithubController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        log.info("Found data for user: {}", userDetails);
+        log.info("Successfully found for user: {}", username);
         return ResponseEntity.ok(userDetails);
 
     }

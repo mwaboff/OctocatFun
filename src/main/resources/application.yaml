@@ -15,4 +15,6 @@ spring:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: test
+  cache:
+    type: "none"  # Disable spring cache for testing profile. See https://docs.spring.io/spring-boot/reference/io/caching.html#io.caching.testing

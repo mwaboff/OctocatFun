@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.resilience.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.io.IOException;
  * Retries are automatically performed on transient I/O failures.
  */
 @Component
+@EnableCaching
 @Slf4j
 public class GithubClientImpl implements GithubClient {
 
